@@ -566,6 +566,9 @@ class MainWindow(QMainWindow):
         self.timer.setInterval(self.POLL_INTERVAL_MS)
         self.timer.timeout.connect(self._poll_clipboard)
 
+        # Begin monitoring right away; the button still stops/starts it.
+        self._toggle_monitoring()
+
     # -- UI construction ---------------------------------------------------
 
     def _build_ui(self):
