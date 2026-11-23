@@ -537,7 +537,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Clipboard Filename Sanitizer GUI 2026.07.26 (raron)")
+        self.setWindowTitle("Clipboard Filename Sanitizer GUI (raron 2026.11.23.1)")
         self.resize(640, 700)
 
         self.options = SanitizerOptions()

@@ -65,9 +65,22 @@ Requires Python 3.10 or newer. The only dependency is
 Developed and used on Linux Mint. The Windows and macOS instructions below
 are the standard ones, but I haven't tested them myself.
 
+### Getting the program
+
+Either download the repository as a ZIP file from the GitHub page
+(green **Code** button, then **Download ZIP**) and extract it into a folder,
+or use `git` to clone it into a local folder:
+
+```bash
+git clone https://github.com/rar0n/Clipboard-Filename-Sanitizer-GUI.git
+cd Clipboard-Filename-Sanitizer-GUI
+```
+
+With a clone, `git pull` later fetches updates.
+
 ### Linux
 
-1. Save/extract the program into a folder, `cd` to that folder or just
+1. Get the program into a folder (see above). `cd` to that folder or just
    right-click the folder and select "Open in Terminal".
 2. Install dependencies into a venv (virtual environment):
    ```bash
@@ -82,7 +95,7 @@ are the standard ones, but I haven't tested them myself.
 
 1. Install [Python](https://www.python.org/downloads/windows/) if you haven't.
    In the installer, tick **"Add python.exe to PATH"**.
-2. Save/extract the program into a folder. In File Explorer, open the folder,
+2. Get the program into a folder (see above). In File Explorer, open the folder,
    type `cmd` (or `powershell`) in the address bar and press Enter, to open a
    terminal there.
 3. Create the venv and install dependencies. The venv is created the same way
@@ -253,7 +266,7 @@ Copyright (c) 2026 Ragnar Aronsen
 
 ## Version history
 
-- 2026.11.23
+- 2026.11.23.1
              - Options section is collapsible (collapsed at start), window
                slightly shorter.
              - Monitoring starts automatically at launch, and existing
@@ -261,3 +274,5 @@ Copyright (c) 2026 Ragnar Aronsen
              - Fix: "Remove trailing symbols" left a trailing "-" or " -" in
                some cases (e.g. "Title - |"), which only disappeared when
                the text was processed a second time.
+             - Version number in the title bar is now "(raron YYYY.MM.DD.x)",
+               x being the day's version.
