@@ -551,6 +551,17 @@ class MainWindow(QMainWindow):
         self._build_ui()
         self._apply_options_to_widgets()
 
+        # Start with the Options box collapsed. Set the state directly (no
+        # signal) so the toggle handler's resize logic doesn't run before the
+        # window has been laid out; expanding later restores the full height.
+        self._height_before_collapse = self.height()
+        self.btn_options_toggle.blockSignals(True)
+        self.btn_options_toggle.setChecked(False)
+        self.btn_options_toggle.blockSignals(False)
+        self.btn_options_toggle.setArrowType(Qt.RightArrow)
+        self.options_box.setVisible(False)
+        self.resize(self.width(), 480)
+
         self.timer = QTimer(self)
         self.timer.setInterval(self.POLL_INTERVAL_MS)
         self.timer.timeout.connect(self._poll_clipboard)
