@@ -5,7 +5,7 @@
 # then create the venv once with:
 #   python3 -m venv venv
 #   source venv/bin/activate
-#   pip install PySide6 pyperclip
+#   pip install -r requirements.txt
 #   deactivate
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
