@@ -5,6 +5,8 @@
 - Copy a title, a headline or a filename from anywhere, paste it as a file name.
   No extra steps in between.
 
+<img width="640" height="728" alt="image" src="https://github.com/user-attachments/assets/2e523057-21aa-4e3b-8fd3-1fdf7e377c3c" />
+
 
 ### Features
 
