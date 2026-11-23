@@ -948,19 +948,16 @@ class MainWindow(QMainWindow):
             self._log_banner(f"Stopped at {stop_time}")
             self.status.showMessage(f"Stopped at {stop_time}")
         else:
-            self.last_text = self.clipboard.text()
+            # Empty last_text means whatever is already on the clipboard
+            # counts as new: the first poll sanitizes (or ignores/logs) it,
+            # so there's no need to copy something else and re-copy it.
+            self.last_text = ""
             self.timer.start()
             self.monitoring = True
             self.btn_toggle.setText("Stop Monitoring")
             self.btn_toggle.setStyleSheet(button_style(COLOR_DARK_PURPLE))
             start_time = get_timestamp_detailed()
             self._log_banner(f"Started at {start_time}")
-            clip_preview = first_line(self.last_text)
-            if clip_preview:
-                self.log.append(
-                    f'<span style="color:{LOG_INFO_COLOR};">Clipboard: '
-                    f'{html_escape(clip_preview)}</span>'
-                )
             self.status.showMessage(f"Monitoring since {start_time}")
 
     def _poll_clipboard(self):
