@@ -23,7 +23,7 @@ from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QGroupBox, QCheckBox, QPushButton, QLabel, QLineEdit,
-    QTextEdit, QStatusBar, QSizePolicy
+    QTextEdit, QStatusBar, QSizePolicy, QToolButton
 )
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -211,8 +211,11 @@ def remove_trailing_symbols(text: str) -> str:
             return True
         return False
 
-    result = text.rstrip()
-    while result and not is_valid_char(result[-1]):
+    # Strip whitespace and invalid symbols together, in one loop. Stopping at
+    # the first whitespace char left leftovers like "Title - |" -> "Title -"
+    # (the space shielded the "-"), which only disappeared on a second pass.
+    result = text
+    while result and (result[-1].isspace() or not is_valid_char(result[-1])):
         result = result[:-1]
     return result
 
@@ -535,7 +538,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Clipboard Filename Sanitizer GUI 2026.07.26 (raron)")
-        self.resize(640, 720)
+        self.resize(640, 700)
 
         self.options = SanitizerOptions()
         load_settings(self.options)
@@ -543,6 +546,7 @@ class MainWindow(QMainWindow):
         self.clipboard = QApplication.clipboard()
         self.last_text = ""
         self.monitoring = False
+        self._height_before_collapse = 0
 
         self._build_ui()
         self._apply_options_to_widgets()
@@ -557,7 +561,22 @@ class MainWindow(QMainWindow):
         central = QWidget()
         layout = QVBoxLayout(central)
 
-        options_box = QGroupBox("Options")
+        # Collapsible header: clicking it hides/shows the whole options box.
+        self.btn_options_toggle = QToolButton()
+        self.btn_options_toggle.setText("Options")
+        self.btn_options_toggle.setCheckable(True)
+        self.btn_options_toggle.setChecked(True)
+        self.btn_options_toggle.setArrowType(Qt.DownArrow)
+        self.btn_options_toggle.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.btn_options_toggle.setStyleSheet(
+            "QToolButton { border: none; font-weight: bold; padding: 2px 0px; }"
+        )
+        self.btn_options_toggle.setToolTip("Show / hide the options.")
+        self.btn_options_toggle.toggled.connect(self._on_options_toggled)
+        layout.addWidget(self.btn_options_toggle, 0, Qt.AlignLeft)
+
+        options_box = QGroupBox()
+        self.options_box = options_box
         options_outer = QVBoxLayout(options_box)
         columns_row = QHBoxLayout()
         col1 = QVBoxLayout()
@@ -809,6 +828,25 @@ class MainWindow(QMainWindow):
                     other.setChecked(False)
                     other.blockSignals(False)
         self._on_option_changed()
+
+    def _on_options_toggled(self, expanded: bool):
+        """Collapse/expand the options box. The window height follows, so the
+        log doesn't just stretch into the freed space; expanding restores the
+        height the window had before it was collapsed."""
+        if expanded:
+            self.btn_options_toggle.setArrowType(Qt.DownArrow)
+            self.options_box.setVisible(True)
+            if self._height_before_collapse and not self.isMaximized():
+                self.resize(self.width(), self._height_before_collapse)
+        else:
+            self._height_before_collapse = self.height()
+            freed = (self.options_box.height()
+                     + self.centralWidget().layout().spacing())
+            self.btn_options_toggle.setArrowType(Qt.RightArrow)
+            self.options_box.setVisible(False)
+            if not self.isMaximized():
+                self.resize(self.width(), max(self.minimumHeight(),
+                                              self.height() - freed))
 
     def _on_save_settings(self):
         save_settings(self.options)
