@@ -1,0 +1,16 @@
+{
+  "strip_to_one_line": true,
+  "remove_emoji": true,
+  "latin_first": true,
+  "attach_symbols": false,
+  "remove_trailing_symbols": true,
+  "move_parens": true,
+  "keep_quote_symbol": true,
+  "timestamp": true,
+  "separator": " - ",
+  "use_separator": true,
+  "ignore_urls": true,
+  "ignore_file_paths": true,
+  "ignore_hashes": true,
+  "case_mode": "none"
+}

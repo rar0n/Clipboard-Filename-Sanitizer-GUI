@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Clipboard Sanitizer
+Comment=Sanitize clipboard text for file names
+Exec=/home/ragnar/Documents/Progging/Python/Clipboard\\ Filename\\ sanitizer\\ GUI/run_clipboard_sanitizer.sh
+Icon=edit-paste
+Terminal=false
+Categories=Utility;
+StartupNotify=false
